@@ -39,8 +39,16 @@ app.use((req, res, next) => {
   next();
 });
 
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/secret', isLoggedIn, secretRouter);
