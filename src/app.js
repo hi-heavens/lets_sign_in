@@ -41,9 +41,9 @@ app.use((req, res, next) => {
 
 passport.serializeUser((user, done) => {
   const {
-    _json: { name, email },
+    _json: { name, email, sub },
   } = user;
-  done(null, { name, email });
+  done(null, { name, email, sub });
 });
 passport.deserializeUser((obj, done) => {
   done(null, obj);
@@ -65,7 +65,9 @@ app.get('/api/v1/failure', (req, res) => {
 });
 
 app.all('*', (req, res) => {
-  res.status(404).send(`The route ${req.originalUrl} does not exist! 💨`);
+  return res
+    .status(404)
+    .send(`The route ${req.originalUrl} does not exist! 💨`);
 });
 
 module.exports = app;

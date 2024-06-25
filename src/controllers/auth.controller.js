@@ -8,8 +8,12 @@ const googleCallback = function (req, res) {
   return res.send(`Google called us back!`);
 };
 
-const logout = function (req, res) {
-  return res.send(`You have logged out!`);
+const logout = function (req, res, next) {
+  req.logout(err => {
+    if (err) return next(err);
+    res.redirect('/api/v1');
+  });
+  next();
 };
 
 module.exports = { googleSignup, googleCallback, logout };
