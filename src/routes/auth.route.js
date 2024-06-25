@@ -1,11 +1,13 @@
 'use strict';
 
 const express = require('express');
-
-const router = express.Router();
+const isLoggedIn = require('../middlewares/check.login');
 const { googleSignup, logout } = require('../controllers/auth.controller');
 
-router.get('/google', googleSignup);
+const router = express.Router();
+
+router.get('/google', isLoggedIn, googleSignup);
+router.get('/google/callback', googleSignup);
 router.get('/logout', logout);
 
 module.exports = router;
