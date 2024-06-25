@@ -1,10 +1,11 @@
 'use strict';
 
 const express = require('express');
-const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('This is me');
-});
+const router = express.Router();
+const { googleSignup, logout } = require('../controllers/auth.controller');
+
+router.get('/google', googleSignup);
+router.get('/logout', logout);
 
 module.exports = router;
