@@ -40,7 +40,10 @@ app.use((req, res, next) => {
 });
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  const {
+    _json: { name, email },
+  } = user;
+  done(null, { name, email });
 });
 passport.deserializeUser((obj, done) => {
   done(null, obj);
