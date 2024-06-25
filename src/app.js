@@ -10,6 +10,7 @@ const { AUTH_OPTIONS } = require('./utils/auth.options');
 const secretRouter = require('./routes/secret.route');
 const { Strategy } = require('passport-google-oauth20');
 const { verifyCallback } = require('./utils/verify.callback');
+const isLoggedIn = require('./middlewares/check.login');
 
 const app = express();
 
@@ -21,10 +22,14 @@ passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 app.use(passport.initialize());
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/secret', secretRouter);
+app.use('/api/v1/secret', isLoggedIn, secretRouter);
 
 app.get('/api/v1', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
+
+app.get('/api/v1/failure', (req, res) => {
+  return res.send('Failure to authenticate');
 });
 
 app.all('*', (req, res) => {
